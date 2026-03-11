@@ -986,80 +986,49 @@ async function telechargerPDF() {
     return;
   }
 
-  // Récupérer champs éditables avant export
-  const d = currentData;
-  const numPiece = document.getElementById('f-num-piece').value;
-  const dateDeliv = document.getElementById('f-date-delivrance').value;
-  const dateExp   = document.getElementById('f-date-expiration').value;
-  const beneficiaire = document.getElementById('f-beneficiaire').value;
-  const modesTrans = ['Courrier','Courriel','Fax','Téléphone']
-    .filter(m => document.getElementById('mt-'+m.toLowerCase())?.checked)
-    .join(', ');
-
   // Intégrer la signature canvas dans la zone client avant export
   var sigDataUrl = getSigDataUrl();
   var sigZone = document.getElementById('sz-titulaire');
-  var canvasEl = document.getElementById('sig-canvas');
   if (sigZone && sigDataUrl) {
     sigZone.innerHTML = '<img src="' + sigDataUrl + '" style="max-width:100%;max-height:100%;object-fit:contain;">';
-  } else if (sigZone) {
-    sigZone.innerHTML = '<span style="color:#aaa;font-size:9pt;font-style:italic;">Signature non fournie</span>';
   }
-  // Masquer le bouton Effacer pour le PDF
-  if (canvasEl) canvasEl.style.cursor = 'default';
 
-  toast('⏳ Génération du PDF…', 'ok');
-  document.getElementById('btn-dl').disabled = true;
+  toast('Generation du PDF en cours…', 'ok');
+  document.getElementById('btn-dl').disabled  = true;
   document.getElementById('btn-dl2').disabled = true;
 
-  // Masquer la barre d'actions et la zone approval pour le PDF
-  document.getElementById('approval-section').style.display = 'none';
-  document.querySelector('.action-bar').style.display = 'none';
+  // Masquer barre actions + zone approval pour le rendu PDF
+  var approvalSection = document.getElementById('approval-section');
+  var actionBar       = document.querySelector('.action-bar');
+  approvalSection.style.display = 'none';
+  actionBar.style.display       = 'none';
 
-  const nomFichier = 'ABCO_Convention_' + (d.nom || 'CLIENT').toUpperCase() + '_' + (d.prenom || '').toUpperCase() + '.pdf';
+  // Nom du fichier
+  var nomInput = document.getElementById('t-nom');
+  var prenomInput = document.getElementById('t-prenom');
+  var nom    = (nomInput    ? nomInput.value    : 'CLIENT').toUpperCase() || 'CLIENT';
+  var prenom = (prenomInput ? prenomInput.value : '').toUpperCase();
+  var nomFichier = 'ABCO_Convention_' + nom + (prenom ? '_' + prenom : '') + '.pdf';
 
-  const opt = {
+  var opt = {
     margin: 0,
     filename: nomFichier,
-    image: { type: 'jpeg', quality: 0.95 },
+    image:    { type: 'jpeg', quality: 0.97 },
     html2canvas: { scale: 2, useCORS: true, letterRendering: true },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    jsPDF:    { unit: 'mm', format: 'a4', orientation: 'portrait' },
     pagebreak: { mode: ['css', 'legacy'] }
   };
 
   try {
     await html2pdf().set(opt).from(document.getElementById('conv-pages')).save();
-    toast('✅ PDF téléchargé !', 'ok');
-
-    // Générer le PDF en blob pour sauvegarder dans Firestore
-    if (d.docId) {
-      try {
-        toast('⏳ Envoi au dashboard agents…', 'ok');
-        const pdfBlob = await html2pdf()
-          .set({...opt, filename: nomFichier})
-          .from(document.getElementById('conv-pages'))
-          .outputPdf('blob');
-
-        // Convertir en base64
-        const pdfB64 = await new Promise((res) => {
-          const reader = new FileReader();
-          reader.onload = () => res(reader.result); // data:application/pdf;base64,...
-          reader.readAsDataURL(pdfBlob);
-        });
-
-        await sauvegarderComplementFirestore(d.docId, { numPiece, dateDeliv, dateExp, beneficiaire, modesTrans, conventionPdfB64: pdfB64 });
-        toast('✅ Convention transmise au dashboard agents !', 'ok');
-      } catch(e) {
-        console.warn('Sauvegarde Firestore:', e);
-        await sauvegarderComplementFirestore(d.docId, { numPiece, dateDeliv, dateExp, beneficiaire, modesTrans });
-      }
-    }
+    toast('PDF téléchargé avec succès !', 'ok');
   } catch(e) {
     toast('Erreur PDF : ' + e.message, 'err');
+    console.error(e);
   } finally {
-    document.getElementById('approval-section').style.display = 'flex';
-    document.querySelector('.action-bar').style.display = 'flex';
-    document.getElementById('btn-dl').disabled = false;
+    approvalSection.style.display = 'flex';
+    actionBar.style.display       = 'flex';
+    document.getElementById('btn-dl').disabled  = false;
     document.getElementById('btn-dl2').disabled = false;
   }
 }
