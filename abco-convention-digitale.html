@@ -1073,36 +1073,71 @@ async function sauvegarderComplementFirestore(docId, complements) {
   });
 }
 
-// ══════════════════════════════════════════════
-// INIT AU CHARGEMENT DE LA PAGE
-// ══════════════════════════════════════════════
-document.addEventListener('DOMContentLoaded', function() {
-  // Construire les zones de signature statiquement
-  const today = new Date().toLocaleDateString('fr-FR', {day:'2-digit', month:'long', year:'numeric'});
-  const sigGrid = document.getElementById('sig-grid-wrap');
-  sigGrid.style.gridTemplateColumns = '1fr 1fr';
 
-  function makeSigBox(label, sub, name, date, idSuffix) {
-    const box = document.createElement('div');
-    box.className = 'sig-box';
-    box.innerHTML = `
-      <div class="sig-label">${label}</div>
-      <div class="sig-sub">${sub}</div>
-      <div class="sig-zone" id="sz-${idSuffix}" style="height:100px;">
-        <span style="color:#aaa;font-size:9pt;font-style:italic;">Emplacement signature</span>
-      </div>
-      <div class="sig-name">${name}</div>
-      <div class="sig-date">${date}</div>`;
-    return box;
+document.addEventListener('DOMContentLoaded', function() {
+
+  // === ZONES DE SIGNATURE ===
+  var today = new Date().toLocaleDateString('fr-FR', {day:'2-digit', month:'long', year:'numeric'});
+  var sigGrid = document.getElementById('sig-grid-wrap');
+  if (sigGrid) {
+    sigGrid.style.gridTemplateColumns = '1fr 1fr';
+
+    function makeSigBox(label, sub, name, date, idSuffix) {
+      var box = document.createElement('div');
+      box.className = 'sig-box';
+      box.innerHTML =
+        '<div class="sig-label">' + label + '</div>' +
+        '<div class="sig-sub">' + sub + '</div>' +
+        '<div class="sig-zone" id="sz-' + idSuffix + '" style="height:100px;">' +
+          '<span style="color:#aaa;font-size:9pt;font-style:italic;">Emplacement signature</span>' +
+        '</div>' +
+        '<div class="sig-name">' + name + '</div>' +
+        '<div class="sig-date">' + date + '</div>';
+      return box;
+    }
+
+    sigGrid.appendChild(makeSigBox('ABCO BOURSE', 'Le mandataire', 'Direction Generale', '', 'abco'));
+    sigGrid.appendChild(makeSigBox('Le Client', 'Titulaire du compte', '', 'Signe le ' + today, 'titulaire'));
   }
 
-  // Signature ABCO
-  sigGrid.appendChild(makeSigBox('ABCO BOURSE', 'Le mandataire', 'Direction Generale', '', 'abco'));
-  // Signature client
-  sigGrid.appendChild(makeSigBox('Le Client', 'Titulaire du compte', '', 'Signe le ' + today, 'titulaire'));
+  var convDate = document.getElementById('conv-date');
+  if (convDate && !convDate.textContent) convDate.textContent = today;
 
-  document.getElementById('conv-date').textContent = today;
-  document.getElementById('approval-name').textContent = 'le soussigne(e)';
+  var barName = document.getElementById('bar-client-name');
+  if (barName && barName.textContent.includes('Chargement')) {
+    barName.textContent = "Convention d'ouverture de compte";
+  }
+
+  // === INTERACTIVITE CASES A COCHER ===
+  document.querySelectorAll('.check-item').forEach(function(item) {
+    item.style.cursor = 'pointer';
+    item.style.userSelect = 'none';
+    item.addEventListener('click', function() {
+      var box = item.querySelector('.box-check');
+      if (!box) return;
+      var row = item.closest('.check-row');
+      if (row) {
+        // Comportement radio : un seul par groupe
+        row.querySelectorAll('.box-check').forEach(function(b) {
+          b.classList.remove('checked');
+        });
+        box.classList.add('checked');
+      } else {
+        box.classList.toggle('checked');
+      }
+    });
+  });
+
+  // Checkboxes hors check-row (ex: mode transmission) — toggle libre
+  document.querySelectorAll('.box-check').forEach(function(box) {
+    if (!box.closest('.check-row') && !box.closest('.check-item')) {
+      box.style.cursor = 'pointer';
+      box.addEventListener('click', function() {
+        box.classList.toggle('checked');
+      });
+    }
+  });
+
 });
 </script>
 </body>

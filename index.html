@@ -192,6 +192,17 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);fon
 .pf-check-item { display:flex; align-items:center; gap:6px; cursor:pointer; font-size:13px; font-weight:600; }
 .pf-check-item input[type=radio] { width:15px; height:15px; accent-color:#b6985a; cursor:pointer; }
 .pf-check-item.selected { color:#9a7d43; }
+
+.risque-group { display:flex; flex-direction:column; gap:10px; margin-top:6px; }
+.risque-opt { display:flex; align-items:flex-start; gap:10px; cursor:pointer; padding:10px 14px; border:1.5px solid var(--border); border-radius:10px; transition:border-color 0.2s, background 0.2s; }
+.risque-opt:hover { border-color:var(--gold); background:rgba(182,152,90,0.04); }
+.risque-opt input[type=radio] { margin-top:3px; flex-shrink:0; accent-color:var(--green); }
+.risque-opt input[type=radio]:checked + .risque-line { color:var(--green); }
+.risque-opt:has(input:checked) { border-color:var(--green); background:rgba(23,90,79,0.05); }
+.risque-line { display:flex; flex-direction:column; gap:2px; }
+.risque-line strong { font-size:13px; color:var(--text); }
+.risque-desc { font-size:12px; color:var(--muted); font-style:italic; line-height:1.5; }
+
 </style>
 </head>
 <body>
