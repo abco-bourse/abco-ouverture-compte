@@ -185,6 +185,100 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);fon
   .portfolio-cards{grid-template-columns:repeat(2,1fr);}
   .lbc-question{flex-direction:column;align-items:flex-start;gap:8px;}
 }
+
+/* ── GRAPHIQUE PORTEFEUILLE ── */
+.pf-chart-wrap { position:relative; padding:0 0 12px; }
+.pf-legend-top,.pf-legend-bot {
+  font-size:11px; color:var(--muted); text-align:right;
+  padding-right:4px; margin-bottom:4px;
+}
+.pf-legend-bot { margin-top:8px; }
+.pf-chart-area { position:relative; padding-left:120px; }
+.pf-baseline {
+  position:absolute; left:120px; right:0;
+  height:2px; background:#333;
+  top:calc(180px + 28px); /* hauteur max barre verte + label top */
+}
+.pf-baseline-label {
+  position:absolute; left:0; width:115px;
+  top:calc(180px + 20px);
+  font-size:10px; color:#555; text-align:right;
+}
+.pf-bars-row {
+  display:flex; gap:24px; align-items:flex-end;
+  padding-bottom: 0;
+}
+.pf-bar-col {
+  display:flex; flex-direction:column; align-items:center;
+  cursor:pointer; flex:1;
+}
+.pf-bar-col input[type=radio] { display:none; }
+.pf-bar-chart {
+  display:flex; flex-direction:column; align-items:center;
+  border:2px solid transparent; border-radius:6px;
+  padding:4px; transition:border-color 0.2s;
+}
+.pf-bar-col:has(input:checked) .pf-bar-chart {
+  border-color: var(--gold);
+  background: rgba(182,152,90,0.05);
+}
+.pf-val-top {
+  font-size:10px; font-weight:600; color:#175a4f;
+  margin-bottom:4px; white-space:nowrap;
+}
+.pf-val-bot {
+  font-size:10px; font-weight:600; color:#b83232;
+  margin-top:4px; white-space:nowrap;
+}
+.pf-green-bar {
+  width:52px; background:#22c55e; border-radius:3px 3px 0 0;
+}
+.pf-red-bar {
+  width:52px; background:#ef4444; border-radius:0 0 3px 3px;
+}
+.pf-checkbox-wrap {
+  display:flex; align-items:center; gap:6px;
+  margin-top:10px;
+}
+.pf-fake-check {
+  width:16px; height:16px; border:2px solid var(--border);
+  border-radius:3px; display:inline-block; flex-shrink:0;
+  transition:all 0.2s;
+}
+.pf-bar-col:has(input:checked) .pf-fake-check {
+  background:var(--gold); border-color:var(--gold);
+}
+.pf-bar-col:has(input:checked) .pf-fake-check::after {
+  content:"✓"; color:#fff; font-size:10px;
+  display:flex; align-items:center; justify-content:center;
+  width:100%; height:100%;
+}
+.pf-label-name {
+  font-size:12px; font-weight:600; color:var(--text);
+}
+.pf-bar-col:has(input:checked) .pf-label-name { color:var(--gold-dark); }
+
+/* ── RISQUE AVEC DESCRIPTIONS ── */
+.risque-group { display:flex; flex-direction:column; gap:10px; margin-top:6px; }
+.risque-opt {
+  display:flex; align-items:flex-start; gap:10px;
+  padding:12px 14px; border-radius:10px;
+  border:1.5px solid var(--border); background:var(--surface);
+  cursor:pointer; transition:all 0.18s;
+}
+.risque-opt:hover { border-color:var(--gold); background:var(--gold-light); }
+.risque-opt:has(input:checked) { border-color:var(--gold); background:var(--gold-light); }
+.risque-opt input[type=radio] { width:16px; height:16px; accent-color:var(--gold); flex-shrink:0; margin-top:2px; }
+.risque-line { font-size:13px; color:var(--text); line-height:1.5; }
+.risque-desc { color:var(--muted); font-size:12px; font-style:italic; }
+
+@media(max-width:640px){
+  .pf-bars-row { gap:10px; }
+  .pf-green-bar,.pf-red-bar { width:38px; }
+  .pf-val-top,.pf-val-bot { font-size:8px; }
+  .pf-chart-area { padding-left:90px; }
+  .pf-baseline-label { width:85px; font-size:9px; }
+}
 </style>
 </head>
 <body>
@@ -467,11 +561,15 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);fon
         <label class="radio-opt"><input type="radio" name="objectif" value="Spéculation"> Spéculation</label>
       </div>
     </div>
-    <div class="fg"><label>Horizon de placement <span class="req">*</span></label>
+    <div class="fg"><label>Dans combien de temps auriez-vous besoin de vos fonds ? <span class="req">*</span></label>
       <div class="radio-group">
-        <label class="radio-opt"><input type="radio" name="horizon" value="Court terme (moins de 2 ans)" required> Court terme (&lt; 2 ans)</label>
-        <label class="radio-opt"><input type="radio" name="horizon" value="Moyen terme (2 – 5 ans)"> Moyen terme (2–5 ans)</label>
-        <label class="radio-opt"><input type="radio" name="horizon" value="Long terme (plus de 5 ans)"> Long terme (&gt; 5 ans)</label>
+        <label class="radio-opt"><input type="radio" name="horizon" value="Moins de 1 an" required> Moins de 1 an</label>
+        <label class="radio-opt"><input type="radio" name="horizon" value="Environ 3 ans"> Environ 3 ans</label>
+        <label class="radio-opt"><input type="radio" name="horizon" value="Environ 5 ans"> Environ 5 ans</label>
+        <label class="radio-opt"><input type="radio" name="horizon" value="Environ 10 ans"> Environ 10 ans</label>
+        <label class="radio-opt"><input type="radio" name="horizon" value="Environ 15 ans"> Environ 15 ans</label>
+        <label class="radio-opt"><input type="radio" name="horizon" value="20 ans"> 20 ans</label>
+        <label class="radio-opt"><input type="radio" name="horizon" value="25 ans et plus"> 25 ans et plus</label>
       </div>
     </div>
     <div class="fg"><label>Niveau de connaissance des marchés financiers</label>
@@ -482,12 +580,12 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);fon
         <label class="radio-opt"><input type="radio" name="connaissance" value="Expert"> Expert</label>
       </div>
     </div>
-    <div class="fg"><label>Tolérance au risque <span class="req">*</span></label>
-      <div class="radio-group">
-        <label class="radio-opt"><input type="radio" name="risque" value="Faible" required> Faible</label>
-        <label class="radio-opt"><input type="radio" name="risque" value="Modéré"> Modéré</label>
-        <label class="radio-opt"><input type="radio" name="risque" value="Élevé"> Élevé</label>
-        <label class="radio-opt"><input type="radio" name="risque" value="Très élevé"> Très élevé</label>
+    <div class="fg"><label>Quel est votre niveau de tolérance au risque ? <span class="req">*</span></label>
+      <div class="risque-group">
+        <label class="risque-opt"><input type="radio" name="risque" value="Faible" required><span class="risque-line"><strong>Faible</strong> <span class="risque-desc">« Votre objectif est de préserver votre placement plutôt que d'obtenir des rendements élevés. »</span></span></label>
+        <label class="risque-opt"><input type="radio" name="risque" value="Moyen"><span class="risque-line"><strong>Moyen</strong> <span class="risque-desc">« Vous acceptez un certain degré de risque et de volatilité afin de pouvoir obtenir des rendements élevés à long terme. »</span></span></label>
+        <label class="risque-opt"><input type="radio" name="risque" value="Élevé"><span class="risque-line"><strong>Élevé</strong> <span class="risque-desc">« Vous acceptez un degré de risque et de volatilité raisonnable afin de pouvoir obtenir des rendements plus élevés à long terme. »</span></span></label>
+        <label class="risque-opt"><input type="radio" name="risque" value="Très élevé"><span class="risque-line"><strong>Très élevé</strong> <span class="risque-desc">« Vous acceptez un degré de risque et de volatilité très élevé afin de pouvoir obtenir des rendements plus élevés à long terme. »</span></span></label>
       </div>
     </div>
     <div class="fg"><label>Mode de communication préféré (plusieurs choix)</label>
@@ -502,36 +600,65 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);fon
 
   <div class="box">
     <h3>📊 Profil de portefeuille <span class="req">*</span></h3>
-    <div class="notice">Choisissez le profil de portefeuille qui correspond le mieux à votre appétit pour le risque et vos attentes de rendement.</div>
-    <div class="portfolio-cards">
-      <label class="portfolio-card">
-        <input type="radio" name="portefeuille" value="Défensif" required>
-        <div class="pf-name">Défensif</div>
-        <div class="pf-bar-wrap"><div class="pf-bar" style="width:25%"></div></div>
-        <div class="pf-perf"><span class="pf-gain">+ 40 000 FCFA</span><span class="pf-loss">- 20 000 FCFA</span></div>
-        <div class="pf-check">✓</div>
-      </label>
-      <label class="portfolio-card">
-        <input type="radio" name="portefeuille" value="Équilibré">
-        <div class="pf-name">Équilibré</div>
-        <div class="pf-bar-wrap"><div class="pf-bar" style="width:50%"></div></div>
-        <div class="pf-perf"><span class="pf-gain">+ 80 000 FCFA</span><span class="pf-loss">- 60 000 FCFA</span></div>
-        <div class="pf-check">✓</div>
-      </label>
-      <label class="portfolio-card">
-        <input type="radio" name="portefeuille" value="Dynamique">
-        <div class="pf-name">Dynamique</div>
-        <div class="pf-bar-wrap"><div class="pf-bar" style="width:75%"></div></div>
-        <div class="pf-perf"><span class="pf-gain">+ 120 000 FCFA</span><span class="pf-loss">- 100 000 FCFA</span></div>
-        <div class="pf-check">✓</div>
-      </label>
-      <label class="portfolio-card">
-        <input type="radio" name="portefeuille" value="Offensif">
-        <div class="pf-name">Offensif</div>
-        <div class="pf-bar-wrap"><div class="pf-bar" style="width:100%"></div></div>
-        <div class="pf-perf"><span class="pf-gain">+ 200 000 FCFA</span><span class="pf-loss">- 160 000 FCFA</span></div>
-        <div class="pf-check">✓</div>
-      </label>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:20px;">Le tableau suivant montre le meilleur et le pire rendement potentiel de quatre portefeuilles fictifs de <strong>1 000 000 FCFA</strong> après une année. Dans quel portefeuille vous sentiriez-vous le plus à l'aise d'investir ?</p>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:24px;font-style:italic;">Cliquez sur le portefeuille correspondant à votre réponse.</p>
+
+    <!-- Graphique en barres -->
+    <div class="pf-chart-wrap">
+      <!-- Légende droite -->
+      <div class="pf-legend-top">Meilleur résultat</div>
+      <div class="pf-chart-area">
+        <div class="pf-baseline-label">1 000 000 FCFA</div>
+        <div class="pf-baseline"></div>
+        <div class="pf-bars-row">
+
+          <label class="pf-bar-col">
+            <input type="radio" name="portefeuille" value="Défensif" required>
+            <div class="pf-bar-chart selected-indicator">
+              <div class="pf-val-top">1 090 000 FCFA</div>
+              <div class="pf-green-bar" style="height:80px;"></div>
+              <div class="pf-red-bar" style="height:30px;"></div>
+              <div class="pf-val-bot">1 020 000 FCFA</div>
+            </div>
+            <div class="pf-checkbox-wrap"><span class="pf-fake-check"></span><span class="pf-label-name">Défensif</span></div>
+          </label>
+
+          <label class="pf-bar-col">
+            <input type="radio" name="portefeuille" value="Équilibré">
+            <div class="pf-bar-chart">
+              <div class="pf-val-top">1 120 000 FCFA</div>
+              <div class="pf-green-bar" style="height:110px;"></div>
+              <div class="pf-red-bar" style="height:50px;"></div>
+              <div class="pf-val-bot">960 000 FCFA</div>
+            </div>
+            <div class="pf-checkbox-wrap"><span class="pf-fake-check"></span><span class="pf-label-name">Équilibré</span></div>
+          </label>
+
+          <label class="pf-bar-col">
+            <input type="radio" name="portefeuille" value="Dynamique">
+            <div class="pf-bar-chart">
+              <div class="pf-val-top">1 180 000 FCFA</div>
+              <div class="pf-green-bar" style="height:140px;"></div>
+              <div class="pf-red-bar" style="height:75px;"></div>
+              <div class="pf-val-bot">890 000 FCFA</div>
+            </div>
+            <div class="pf-checkbox-wrap"><span class="pf-fake-check"></span><span class="pf-label-name">Dynamique</span></div>
+          </label>
+
+          <label class="pf-bar-col">
+            <input type="radio" name="portefeuille" value="Offensif">
+            <div class="pf-bar-chart">
+              <div class="pf-val-top">1 240 000 FCFA</div>
+              <div class="pf-green-bar" style="height:180px;"></div>
+              <div class="pf-red-bar" style="height:110px;"></div>
+              <div class="pf-val-bot">840 000 FCFA</div>
+            </div>
+            <div class="pf-checkbox-wrap"><span class="pf-fake-check"></span><span class="pf-label-name">Offensif</span></div>
+          </label>
+
+        </div>
+      </div>
+      <div class="pf-legend-bot">Pire résultat</div>
     </div>
   </div>
 
@@ -597,8 +724,8 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);fon
         <input type="hidden" id="question1-hidden" name="question1">
       </div>
       <div class="fg"><label>Réponse n°1 <span class="req">*</span></label><input type="text" id="reponse1" placeholder="Votre réponse secrète" required></div>
-      <div class="fg"><label>Question secrète n°2 <span class="req">*</span></label>
-        <select id="question2-sel" required>
+      <div class="fg"><label>Question secrète n°2 (optionnelle)</label>
+        <select id="question2-sel">
           <option value="">— Choisir une question —</option>
           <option>Meilleur ami d'enfance</option>
           <option>Nom de votre école primaire</option>
@@ -609,7 +736,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);fon
         </select>
         <input type="hidden" id="question2-hidden" name="question2">
       </div>
-      <div class="fg"><label>Réponse n°2 <span class="req">*</span></label><input type="text" id="reponse2" placeholder="Votre réponse secrète" required></div>
+      <div class="fg"><label>Réponse n°2 (optionnelle)</label><input type="text" id="reponse2" placeholder="Votre réponse secrète (optionnelle)"></div>
     </div>
   </div>
 
