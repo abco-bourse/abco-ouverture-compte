@@ -671,23 +671,43 @@ function telecharger() {
 
   /* 4. Options html2pdf */
   var element = document.getElementById('conv');
+
+  /* Coller #conv au bord gauche pour éviter le rognage */
+  var oldMargin   = element.style.margin;
+  var oldPosition = element.style.position;
+  var oldLeft     = element.style.left;
+  var scrollArea  = document.getElementById('scroll-area');
+  var oldJustify  = scrollArea.style.justifyContent;
+  var oldPadding  = scrollArea.style.padding;
+
+  element.style.margin   = '0';
+  element.style.position = 'relative';
+  element.style.left     = '0';
+  scrollArea.style.justifyContent = 'flex-start';
+  scrollArea.style.padding = '0';
+
   var opt = {
-    margin:      [6, 0, 6, 0],
+    margin:      [6, 6, 6, 6],
     filename:    nomFichier,
     image:       { type:'jpeg', quality:0.95 },
     html2canvas: {
       scale:       2,
       useCORS:     true,
-      windowWidth: element.scrollWidth,
+      windowWidth: element.offsetWidth,
       scrollX:     0,
-      scrollY:     0
+      scrollY:     -window.scrollY
     },
     jsPDF:       { unit:'mm', format:'a4', orientation:'portrait' },
     pagebreak:   { mode:'avoid-all' }
   };
 
-  /* 5. Générer */
+  /* Générer puis restaurer */
   html2pdf().set(opt).from(element).save().then(function() {
+    element.style.margin   = oldMargin;
+    element.style.position = oldPosition;
+    element.style.left     = oldLeft;
+    scrollArea.style.justifyContent = oldJustify;
+    scrollArea.style.padding = oldPadding;
     document.getElementById('topbar').style.display      = '';
     document.getElementById('approbation').style.display = '';
   });
