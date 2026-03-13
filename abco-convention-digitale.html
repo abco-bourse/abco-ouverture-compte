@@ -205,7 +205,7 @@ input.appro-nom{
    IMPRESSION — ce qui s'imprime / PDF
 ═══════════════════════════════════════ */
 @media print {
-  *,-webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
   @page { margin: 10mm 12mm; size: A4; }
   #topbar, #approbation, #toast, .sig-eff { display: none !important; }
   body { background: #fff !important; padding: 0 !important; margin: 0 !important; }
