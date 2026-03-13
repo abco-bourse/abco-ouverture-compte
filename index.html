@@ -743,6 +743,15 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);fon
         <div class="locked-hint" id="locked-hint">🔒 Disponible après la vérification SmileID</div>
       </div>
     </div>
+    <div class="next-step-card next-step-locked" id="card-bel">
+      <div class="next-step-num next-step-num-locked" id="num-bel">3</div>
+      <div class="next-step-body">
+        <div class="next-step-title">💻 Signer votre convention de Bourse en Ligne</div>
+        <div class="next-step-desc">Accédez au service de trading en ligne en signant cette convention complémentaire.</div>
+        <a class="smile-link btn-convention-locked" id="btn-bel" href="abco-convention-bel.html" target="_blank">💻 Accéder à la convention BEL</a>
+        <div class="locked-hint" id="locked-hint-bel">🔒 Disponible après la vérification SmileID</div>
+      </div>
+    </div>
   </div>
   <div style="margin-top:24px;text-align:center;font-size:12px;color:var(--muted);">
     Pour toute question : <strong style="color:var(--green)">contact [at] abco.sn</strong> — Tél : (+221) 33 822 68 00
@@ -1089,6 +1098,15 @@ function onSmileIDClick() {
     if (hint)      { hint.textContent = "✅ Vérification SmileID effectuée"; hint.style.color = "var(--green)"; }
     if (numConv)   { numConv.classList.remove("next-step-num-locked"); }
     if (cardSmile) { cardSmile.style.borderColor = "var(--gold)"; }
+    // Débloquer aussi la carte BEL
+    const cardBel   = document.getElementById("card-bel");
+    const btnBel    = document.getElementById("btn-bel");
+    const hintBel   = document.getElementById("locked-hint-bel");
+    const numBel    = document.getElementById("num-bel");
+    if (cardBel)  { cardBel.classList.remove("next-step-locked"); }
+    if (btnBel)   { btnBel.classList.remove("btn-convention-locked"); btnBel.classList.add("btn-convention-unlocked"); }
+    if (hintBel)  { hintBel.textContent = "✅ Disponible"; hintBel.style.color = "var(--green)"; }
+    if (numBel)   { numBel.classList.remove("next-step-num-locked"); }
   }, 3000);
 }
 
