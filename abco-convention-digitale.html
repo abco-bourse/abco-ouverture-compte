@@ -243,6 +243,10 @@ input.appro-nom{
   .sec { color: #175a4f !important; }
   .hdr { border-bottom: 2.5px solid #175a4f !important; }
 
+  /* Canvas caché, image visible */
+  #sig-canvas { display: none !important; }
+  #sig-img-print { display: block !important; }
+
   /* Éviter coupures */
   .boite, .t-dom, .sig-grille, .sec { page-break-inside: avoid; break-inside: avoid; }
 }
@@ -674,20 +678,45 @@ function telecharger() {
     toast('Veuillez cocher « Lu et approuvé »'); return;
   }
 
-  /* Signature canvas → image fixe */
+  /* 1. Convertir le canvas signature en image img dans le DOM */
   var sigCanvas = document.getElementById('sig-canvas');
-  var vide = document.createElement('canvas');
-  vide.width = sigCanvas.width; vide.height = sigCanvas.height;
-  if (sigCanvas.toDataURL() !== vide.toDataURL()) {
-    var img = document.createElement('img');
-    img.src = sigCanvas.toDataURL('image/png');
-    img.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;';
-    document.getElementById('sig-zone').innerHTML = '';
-    document.getElementById('sig-zone').appendChild(img);
-  }
+  var zone      = document.getElementById('sig-zone');
 
-  /* Afficher le guide puis imprimer */
-  window.print();
+  /* Toujours remplacer le canvas par une image pour l'impression */
+  var dataURL = sigCanvas.toDataURL('image/png');
+  var img     = document.createElement('img');
+  img.src     = dataURL;
+  img.id      = 'sig-img-print';
+  img.style.cssText = 'width:100%;height:100%;object-fit:contain;display:block;';
+
+  /* Cacher le canvas, insérer l'image */
+  sigCanvas.style.display = 'none';
+  zone.appendChild(img);
+
+  /* 2. Laisser le navigateur rendre l'image puis imprimer */
+  img.onload = function() {
+    setTimeout(function() {
+      window.print();
+      /* 3. Restaurer le canvas après impression */
+      setTimeout(function() {
+        sigCanvas.style.display = 'block';
+        var old = document.getElementById('sig-img-print');
+        if (old) old.remove();
+      }, 500);
+    }, 100);
+  };
+
+  /* Fallback si onload ne se déclenche pas (data URL déjà en cache) */
+  setTimeout(function() {
+    if (sigCanvas.style.display === 'none') {
+      window.print();
+      setTimeout(function() {
+        sigCanvas.style.display = 'block';
+        var old = document.getElementById('sig-img-print');
+        if (old) old.remove();
+      }, 500);
+    }
+  }, 300);
 }
 
 /* ── Toast ── */
