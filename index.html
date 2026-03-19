@@ -292,7 +292,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);fon
       </div>
       <input type="text" id="adresse" placeholder="Adresse complète" required>
     </div>
-    <div class="fg"><label>Adresse postale (si différente)</label><input type="text" id="adresse-postale" required placeholder="Adresse postale"></div>
+    <div class="fg"><label>Adresse postale (si différente)</label><input type="text" id="adresse-postale" placeholder="Adresse postale"></div>
     <div class="fg"><label>Pièce d'identité <span class="req">*</span></label>
       <div class="radio-group">
         <label class="radio-opt"><input type="radio" name="id-type" value="CNI" required onchange="toggleDateFields(this.value)"> CNI</label>
@@ -313,7 +313,7 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);fon
 
   <div class="box" id="box-conj" style="display:none;">
     <h3 id="title-conj">👫 Co-titulaire</h3>
-    <div class="fg"><label>Civilité</label>
+    <div class="fg"><label>Civilité <span class="req">*</span></label>
       <div class="radio-group">
         <label class="radio-opt"><input type="radio" name="civilite-conj" value="M."> M.</label>
         <label class="radio-opt"><input type="radio" name="civilite-conj" value="Mme"> Mme</label>
@@ -321,20 +321,20 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);fon
       </div>
     </div>
     <div class="grid2">
-      <div class="fg"><label>Nom</label><input type="text" id="nom-conj" required placeholder="NOM" oninput="this.value=this.value.replace(/[0-9]/g,'')"></div>
-      <div class="fg"><label>Prénom(s)</label><input type="text" id="prenom-conj" required placeholder="Prénom(s)" oninput="this.value=this.value.replace(/[0-9]/g,'')"></div>
-      <div class="fg"><label>Date de naissance</label><input type="date" id="dob-conj" required></div>
-      <div class="fg"><label>Lieu de naissance</label><input type="text" id="lieu-naissance-conj" required placeholder="Ville, Pays"></div>
-      <div class="fg"><label>Nationalité</label><input type="text" id="nationalite-conj" required></div>
+      <div class="fg"><label>Nom <span class="req">*</span></label><input type="text" id="nom-conj" required placeholder="NOM" oninput="this.value=this.value.replace(/[0-9]/g,'')"></div>
+      <div class="fg"><label>Prénom(s) <span class="req">*</span></label><input type="text" id="prenom-conj" required placeholder="Prénom(s)" oninput="this.value=this.value.replace(/[0-9]/g,'')"></div>
+      <div class="fg"><label>Date de naissance <span class="req">*</span></label><input type="date" id="dob-conj" required></div>
+      <div class="fg"><label>Lieu de naissance <span class="req">*</span></label><input type="text" id="lieu-naissance-conj" required placeholder="Ville, Pays"></div>
+      <div class="fg"><label>Nationalité <span class="req">*</span></label><input type="text" id="nationalite-conj" required></div>
     </div>
-    <div class="fg"><label>Adresse de résidence</label>
+    <div class="fg"><label>Adresse de résidence <span class="req">*</span></label>
       <div class="radio-group" style="margin-bottom:8px;">
         <label class="radio-opt"><input type="radio" name="residence-type-conj" value="Résident"> Résident</label>
         <label class="radio-opt"><input type="radio" name="residence-type-conj" value="Non Résident"> Non Résident</label>
       </div>
-      <input type="text" id="adresse-conj" required placeholder="Adresse complète">
+      <label>Adresse <span class="req">*</span></label><input type="text" id="adresse-conj" required placeholder="Adresse complète">
     </div>
-    <div class="fg"><label>Pièce d'identité</label>
+    <div class="fg"><label>Pièce d'identité <span class="req">*</span></label>
       <div class="radio-group">
         <label class="radio-opt"><input type="radio" name="id-type-conj" value="CNI"> CNI</label>
         <label class="radio-opt"><input type="radio" name="id-type-conj" value="Extrait de naissance"> Extrait de naissance</label>
@@ -342,13 +342,13 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);fon
       </div>
     </div>
     <div class="grid3">
-      <div class="fg"><label>N° pièce d'identité</label><input type="text" id="id-number-conj" required placeholder="Numéro"></div>
-      <div class="fg"><label>Date de délivrance</label><input type="date" id="id-delivrance-conj" required></div>
-      <div class="fg"><label>Date d'expiration</label><input type="date" id="id-expiration-conj" required></div>
+      <div class="fg"><label>N° pièce d'identité <span class="req">*</span></label><input type="text" id="id-number-conj" required placeholder="Numéro"></div>
+      <div class="fg"><label>Date de délivrance <span class="req">*</span></label><input type="date" id="id-delivrance-conj" required></div>
+      <div class="fg"><label>Date d'expiration <span class="req">*</span></label><input type="date" id="id-expiration-conj" required></div>
     </div>
     <div class="grid2">
-      <div class="fg"><label>Email</label><input type="email" id="email-conj" required placeholder="email@exemple.com"></div>
-      <div class="fg"><label>Téléphone</label><input type="tel" id="telephone-conj" required placeholder="+221 77 000 00 00"></div>
+      <div class="fg"><label>Email <span class="req">*</span></label><input type="email" id="email-conj" required placeholder="email@exemple.com"></div>
+      <div class="fg"><label>Téléphone <span class="req">*</span></label><input type="tel" id="telephone-conj" required placeholder="+221 77 000 00 00"></div>
     </div>
     <div class="fg" id="lien-tuteur-wrap" style="display:none;"><label>Lien avec le tuteur</label>
       <select id="lien-tuteur"><option value="">— Sélectionner —</option><option>Père</option><option>Mère</option><option>Tuteur légal</option><option>Grand-parent</option><option>Autre</option></select>
@@ -381,16 +381,16 @@ body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);fon
       <div class="fg"><label>Profession / Activité <span class="req">*</span></label><input type="text" id="profession" placeholder="Votre métier" required></div>
       <div class="fg"><label>Employeur <span class="req">*</span></label><input type="text" id="employeur" placeholder="Nom de l'entreprise" required></div>
       <div class="fg"><label>Secteur d'activité <span class="req">*</span></label><input type="text" id="secteur" placeholder="Finance, Santé, IT..." required></div>
-      <div class="fg"><label>Adresse de l'employeur</label><input type="text" id="adresse-employeur" required placeholder="Adresse complète"></div>
-      <div class="fg span2"><label>Ancienneté dans cette entreprise</label><input type="text" id="anciennete" required placeholder="Ex: 5 ans"></div>
+      <div class="fg"><label>Adresse de l'employeur <span class="req">*</span></label><input type="text" id="adresse-employeur" required placeholder="Adresse complète"></div>
+      <div class="fg span2"><label>Ancienneté dans cette entreprise <span class="req">*</span></label><input type="text" id="anciennete" required placeholder="Ex: 5 ans"></div>
     </div>
   </div>
 
   <div class="box">
     <h3>🆘 Contact d'urgence & bénéficiaires</h3>
     <div class="grid2">
-      <div class="fg"><label>Nom du contact d'urgence</label><input type="text" id="contact-urgence-nom" required placeholder="Nom Prénom"></div>
-      <div class="fg"><label>Téléphone du contact d'urgence</label><input type="tel" id="contact-urgence-tel" required placeholder="+221 77 000 00 00"></div>
+      <div class="fg"><label>Nom du contact d'urgence <span class="req">*</span></label><input type="text" id="contact-urgence-nom" required placeholder="Nom Prénom"></div>
+      <div class="fg"><label>Téléphone du contact d'urgence <span class="req">*</span></label><input type="tel" id="contact-urgence-tel" required placeholder="+221 77 000 00 00"></div>
     </div>
     <div class="fg"><label>En cas de décès, le capital sera remis à</label>
       <div class="radio-group">
